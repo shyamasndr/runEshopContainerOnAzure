@@ -1,0 +1,11 @@
+az logout
+
+az login 
+
+az account list --output table
+az account set --subscription 'Concierge Subscription'
+$ACR_NAME='SHYAMSCR05122018'
+az resource list --output table
+$azgroup=az group list --query "[0].name" --output tsv
+az acr create --resource-group $azgroup --name $ACR_NAME --sku Premium
+az acr build --registry $ACR_NAME  --image "eshop/ordering.api:{{.Run.ID}}" .   --file "Order.API.Dockerfile"
